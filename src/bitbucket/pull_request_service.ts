@@ -11,8 +11,10 @@ class PullRequestService {
 
     assignReviewer(pullRequestId: number, repositoryUuid: string, workspaceUuid: string) {
         console.log(pullRequestId, repositoryUuid, workspaceUuid);
-        //        /2.0/repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
+        // GET /2.0/repositories/{workspace}/{repo_slug}/effective-default-reviewers
+        // PUT /2.0/repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
 
+        // TODO: request (and cache) effective-default-reviewers and assign the one that has had the longest time since last assignment and remove the others.
     }
 }
 
