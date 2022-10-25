@@ -2,6 +2,7 @@ import express, {Express, Request, Response} from 'express';
 import EventBus from '../event/eventbus';
 import EventType from '../event/eventtype';
 import Event from '../event/event';
+import {Configuration} from "../configuration/configuration";
 
 class Server {
 
@@ -10,10 +11,10 @@ class Server {
     private readonly port: number;
     private app: Express;
 
-    constructor(eventBus: EventBus, port: number, webhookUuid: string) {
+    constructor(eventBus: EventBus, configuration: Configuration) {
         this.eventBus = eventBus;
-        this.webhookUuid = webhookUuid;
-        this.port = port;
+        this.webhookUuid = configuration.bitbucket.webhookUuid;
+        this.port = configuration.port;
         this.app = express();
         this.app.use(express.json());
         this.app.post('/webhook', this.onPullRequestCreated.bind(this));

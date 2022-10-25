@@ -10,11 +10,15 @@ class PullRequestService {
 
     constructor(eventBus: EventBus, client: BitBucketClient) {
         this.client = client;
-        
+
         eventBus.on(EventType.PULL_REQUEST_CREATED, new PullRequestListener(this));
     }
 
-    assignReviewer(pullRequestId: number, repositoryUuid: string, workspaceUuid: string) {
+    public async assignReviewer(pullRequestId: number, repositoryUuid: string, workspaceUuid: string) {
+        const reviewers: string[] = await this.client.getDefaultReviewers(workspaceUuid, repositoryUuid);
+
+        // TODO: determine reviewer that hasn't gotten a ticket the longest
+
         console.log(pullRequestId, repositoryUuid, workspaceUuid);
         // GET /2.0/repositories/{workspace}/{repo_slug}/effective-default-reviewers
         // PUT /2.0/repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
@@ -38,7 +42,9 @@ class PullRequestListener extends EventListener {
         const repositoryUuid: string = event.data.repository.uuid;
         const workspaceUuid: string = event.data.repository.workspace.uuid;
 
-        this.pullRequestService.assignReviewer(pullRequestId, repositoryUuid, workspaceUuid);
+        this.pullRequestService.assignReviewer(pullRequestId, repositoryUuid, workspaceUuid)
+            .then(() => console.log("Successfully assigned reviewer for pull request " + pullRequestId))
+            .catch(e => console.error("Could not assign reviewer for pull request " + pullRequestId, e));
     }
 }
 
