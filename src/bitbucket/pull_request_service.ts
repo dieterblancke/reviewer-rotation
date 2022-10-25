@@ -2,10 +2,15 @@ import EventBus from '../event/eventbus';
 import EventType from "../event/eventtype";
 import EventListener from "../event/eventlistener";
 import Event from '../event/event';
+import BitBucketClient from "./bitbucket_client";
 
 class PullRequestService {
 
-    constructor(eventBus: EventBus) {
+    private client: BitBucketClient;
+
+    constructor(eventBus: EventBus, client: BitBucketClient) {
+        this.client = client;
+        
         eventBus.on(EventType.PULL_REQUEST_CREATED, new PullRequestListener(this));
     }
 
