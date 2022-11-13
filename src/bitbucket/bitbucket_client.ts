@@ -27,6 +27,12 @@ class BitbucketClient {
 
         return reviewerUuids;
     }
+
+    public async updatePullRequest(workspaceUuid: string, repoUuid: string, pullRequestId: number) {
+        const response: AxiosResponse = await this.requestClient.put(`/2.0/repositories/${workspaceUuid}/${repoUuid}/pullrequests/${pullRequestId}`);
+
+        
+    }
 }
 
 export default BitbucketClient;

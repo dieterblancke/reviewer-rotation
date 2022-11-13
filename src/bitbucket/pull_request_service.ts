@@ -18,7 +18,9 @@ class PullRequestService {
         const reviewers: string[] = await this.client.getDefaultReviewers(workspaceUuid, repositoryUuid);
 
         // TODO: determine reviewer that hasn't gotten a ticket the longest
-
+        
+        
+        console.log(reviewers);
         console.log(pullRequestId, repositoryUuid, workspaceUuid);
         // GET /2.0/repositories/{workspace}/{repo_slug}/effective-default-reviewers
         // PUT /2.0/repositories/{workspace}/{repo_slug}/pullrequests/{pull_request_id}
